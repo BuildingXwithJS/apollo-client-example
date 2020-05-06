@@ -1,17 +1,16 @@
-# Example of setting up GraphQL API with Mongoose and graphql-compose
+# Example of setting up local state management with Apollo Client
 
-> Free open-source tutorial on creating a simple GraphQL API using mongoose and graphql-compose
+> Free open-source tutorial on creating a simple React app that uses Apollo Client for local state management
 
-This repository contains code and related materials for [GraphQL in 2020](https://youtu.be/j1hlu6zrbaA) video.
+This repository contains code and related materials for [React state management with Apollo](https://youtu.be/XGEX77DYfgI) video.
 
 ## Project description
 
-This is a small demo showing how to create a simple GraphQL API using mongoose and graphql-compose.
+This is a small demo showing how to create a simple React app that uses Apollo Client for local state management.
 
 ## Related links
 
-- [mongoose](https://mongoosejs.com/)
-- [graphql-compose](https://graphql-compose.github.io/)
+- [Apollo Client](https://www.apollographql.com/)
 
 ## Useful links
 
