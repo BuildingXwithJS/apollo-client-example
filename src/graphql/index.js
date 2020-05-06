@@ -18,12 +18,12 @@ schemaComposer.Query.addFields({
   collections: NotesCollectionTC.getResolver('findMany'),
   collectionCount: NotesCollectionTC.getResolver('count'),
   collectionConnection: NotesCollectionTC.getResolver('connection'),
-  collectionPagination: NotesCollectionTC.getResolver('pagination')
+  collectionPagination: NotesCollectionTC.getResolver('pagination'),
 });
 schemaComposer.Mutation.addFields({
   collectionCreateOne: NotesCollectionTC.getResolver('createOne'),
   collectionUpdateById: NotesCollectionTC.getResolver('updateById'),
-  collectionRemoveById: NotesCollectionTC.getResolver('removeById')
+  collectionRemoveById: NotesCollectionTC.getResolver('removeById'),
 });
 
 // same setup for notes
@@ -32,32 +32,39 @@ schemaComposer.Query.addFields({
   noteById: NotesTC.getResolver('findById'),
   noteByIds: NotesTC.getResolver('findByIds'),
   note: NotesTC.getResolver('findOne'),
-  notes: NotesTC.getResolver('findMany'),
+  notes: NotesTC.getResolver('findMany').addFilterArg({
+    name: 'collectionId',
+    type: 'MongoID!',
+    description: 'Search by collection Id',
+    query: (rawQuery, args, resolveParams) => {
+      rawQuery.collection = args.collectionId;
+    },
+  }),
   noteCount: NotesTC.getResolver('count'),
   noteConnection: NotesTC.getResolver('connection'),
-  notePagination: NotesTC.getResolver('pagination')
+  notePagination: NotesTC.getResolver('pagination'),
 });
 schemaComposer.Mutation.addFields({
   noteCreateOne: NotesTC.getResolver('createOne'),
   noteUpdateById: NotesTC.getResolver('updateById'),
-  noteRemoveById: NotesTC.getResolver('removeById')
+  noteRemoveById: NotesTC.getResolver('removeById'),
 });
 
 // define relation between notes and collections
 NotesTC.addRelation('collection', {
   resolver: () => NotesCollectionTC.getResolver('findById'),
   prepareArgs: {
-    _id: source => source.group
+    _id: (source) => source.group,
   },
-  projection: { group: 1 }
+  projection: { group: 1 },
 });
 // define relation between collection and notes
 NotesCollectionTC.addRelation('notes', {
   resolver: () => NotesTC.getResolver('findMany'),
   prepareArgs: {
-    group: source => source._id
+    group: (source) => source._id,
   },
-  projection: { _id: 1 }
+  projection: { _id: 1 },
 });
 
 const graphqlSchema = schemaComposer.buildSchema();
